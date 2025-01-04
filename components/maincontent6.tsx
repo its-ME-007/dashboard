@@ -11,7 +11,7 @@ const MainContent6: React.FC = () => {
     setIsClicked(true); // Trigger the animation
     setButtonText("Starting..."); // Update button text
     setTimeout(() => {
-      router.push("/mode"); // Redirect after animation
+      router.push("/diag"); // Redirect after animation
     }, 2000); // Delay for animation duration
   };
 

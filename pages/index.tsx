@@ -10,7 +10,7 @@ const welcome = () => {
       const redirectToDashboard = () => {
           setTimeout(() => {
               router.push('/dashboard'); // Navigate to dashboard page
-          }, animationDuration); // Redirect after animationDuration milliseconds
+          }, 1000); // Redirect after animationDuration milliseconds
       };
 
       redirectToDashboard(); // Start redirection timer on component mount
@@ -21,15 +21,7 @@ const welcome = () => {
   }, [router]);
 
 
-    return (
-        <div className="container2">
-            <div className="text sanskrit">नमस्ते!</div>
-            <div className="text english">Hello!</div>
-            <div className="text kannada">ನಮಸ್ಕಾರ!</div>
-            <div id="screen2" className="screen">Welcome To</div>
-            <div id="screen4" className="screen">WIPOD</div>
-        </div>
-    );
+    
 };
 
 export default welcome;

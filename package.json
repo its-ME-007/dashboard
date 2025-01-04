@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "concurrently \"npm run start-car\" \"npm run start-maps\" \"npm run start-backend\"",
+    "start": "concurrently \"npm run start-car\" \"npm run start-value\" \"npm run start-backend\"",
     "start-car": "next dev",
-    "start-maps": "cd ./maps-mapbox-v && python app.py",
+    "start-maps": "python value.py",
     "start-backend": "cd ./speedometer_app1 &&  uvicorn real_time_app:app --host 0.0.0.0 --port 8000",
     "lint": "next lint"
   },
