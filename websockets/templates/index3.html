@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battery Status</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const socket = io.connect("http://" + document.domain + ":" + location.port);
+
+        // Update a specific element's content
+        function updateElement(id, content) {
+          const element = document.getElementById(id);
+          if (element) {
+            element.textContent = content;
+          }
+        }
+
+        // Listen for voltage updates for each cell
+        for (let i = 1; i <= 24; i++) {
+          socket.on(`battery_voltage_${i}`, function (data) {
+            updateElement(`battery_voltage_${i}`, data.Voltage + " V");
+          });
+        }
+
+        // Listen for other updates
+        socket.on("battery_current", function (data) {
+          updateElement("battery_current", data.Current + " A");
+        });
+
+        socket.on("battery_soc", function (data) {
+          updateElement("battery_soc", data.SOC + " %");
+        });
+
+        socket.on("battery_number_of_cells", function (data) {
+          updateElement("battery_number_of_cells", data.NumberOfCells);
+        });
+
+        socket.on("battery_cell_voltage", function (data) {
+          updateElement("battery_cell_voltage", data.CellVoltage + " V");
+        });
+
+        socket.on("battery_charging_mosfet", function (data) {
+          updateElement("battery_charging_mosfet", data.ChargingMOSFET);
+        });
+
+        socket.on("battery_discharging_mosfet", function (data) {
+          updateElement("battery_discharging_mosfet", data.DischargingMOSFET);
+        });
+
+        socket.on("battery_minimum_voltage", function (data) {
+          updateElement("battery_minimum_voltage", data.CellMinimumVoltage + " V");
+        });
+
+        socket.on("battery_maximum_voltage", function (data) {
+          updateElement("battery_maximum_voltage", data.CellMaximumVoltage + " V");
+        });
+
+        socket.on("battery_capacity", function (data) {
+          updateElement("battery_capacity", data.Capacity + " Ah");
+        });
+
+        socket.on("battery_error_status", function (data) {
+          updateElement("battery_error_status", data.ERRORStatus);
+        });
+
+        socket.on("battery_temperature", function (data) {
+          updateElement("battery_temperature", data.Temperature + " °C");
+        });
+      });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      ul li {
+        margin: 10px 0;
+        font-size: 1.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Battery Management System Status</h1>
+    <ul>
+      <!-- Dynamic Voltage Values -->
+      <li>
+        <strong>Cell Voltages:</strong>
+        <ul id="cell_voltages">
+          <!-- Individual cell voltage fields will be dynamically added -->
+          <script>
+            for (let i = 1; i <= 24; i++) {
+              document.write(
+                `<li>Voltage ${i}: <span id="battery_voltage_${i}">0</span> V</li>`
+              );
+            }
+          </script>
+        </ul>
+      </li>
+      <li>Current: <span id="battery_current">0</span> A</li>
+      <li>State of Charge (SOC): <span id="battery_soc">0</span> %</li>
+      <li>Number of Cells: <span id="battery_number_of_cells">0</span></li>
+      <li>Cell Voltage: <span id="battery_cell_voltage">0</span> V</li>
+      <li>Charging MOSFET: <span id="battery_charging_mosfet">OFF</span></li>
+      <li>Discharging MOSFET: <span id="battery_discharging_mosfet">OFF</span></li>
+      <li>
+        Minimum Cell Voltage: <span id="battery_minimum_voltage">0</span> V
+      </li>
+      <li>
+        Maximum Cell Voltage: <span id="battery_maximum_voltage">0</span> V
+      </li>
+      <li>Capacity: <span id="battery_capacity">0</span> Ah</li>
+      <li>Error Status: <span id="battery_error_status">None</span></li>
+      <li>Temperature: <span id="battery_temperature">0</span> °C</li>
+    </ul>
+  </body>
+</html>

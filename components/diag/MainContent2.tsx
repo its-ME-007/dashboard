@@ -92,34 +92,34 @@ const MainContent: React.FC = () => {
   const temperature2 = 32; // Example dynamic temperature value
   const isGood = true;
 
-
   const updateFunction = async () => {
     try {
-      const response = await fetch('http://0.0.0.0:5002/bms');
+      const response = await fetch('http://0.0.0.0:5001/bms');
       const data = await response.json()
-
+      
       const battery = data["Battery"];
       let voltageArray = [];
       
       for(let i = 1; i <= 24; ++i) {
         voltageArray.push(battery[`Voltage_${i}`])
-      }
+        }
 
-      setarrayVoltage(voltageArray)
-      setTemperature(battery["Temperature"])
-      setMosfetChargingState(battery["ChargingMOSFET"])
+        setarrayVoltage(voltageArray)
+        setTemperature(battery["Temperature"])
+        setMosfetChargingState(battery["ChargingMOSFET"])
       setMosfetDischargingState(battery["DischargingMOSFET"])
       setmaxVoltage(battery["CellMaximumVoltage"])
       setminVoltage(battery["CellMinimumVoltage"])
       setbatteryCapacity(battery["Capacity"])
       setErrorCode(battery["ErrorStatus"])
-    } catch(e) {  
-      console.log("Fetch error")
-      window.alert("BMS Service encountered an error")
-    }
-  }
-
-
+      } catch(e) {  
+        console.log("Fetch error")
+        window.alert("BMS Service encountered an error")
+        }
+        }
+        
+        
+/*
   const controlUnitUpdate = async () => {
      try {
       const response = await fetch('http://0.0.0.0:5004/lvl2cu')
@@ -135,16 +135,16 @@ const MainContent: React.FC = () => {
     console.log("BAD ERROR")
     window.alert("Control Unit 2 has encountered an error!")
   }
-  }
-
+  }*/
   useEffect(() => {
     const bms = setInterval(updateFunction, 1000)
-    const id = setInterval(controlUnitUpdate, 1000)
+    //const id = setInterval(controlUnitUpdate, 1000)
     return () => { 
-      clearInterval(id)
+      //clearInterval(id)
       clearInterval(bms)
     }
   })
+
 
   const handleSidebar2Click = (category: string) => {
     setActiveSidebar2(category);
@@ -475,53 +475,49 @@ const MainContent: React.FC = () => {
     
     return null;
   };
+/*
+  const socket = io('http://127.0.0.1:5000');
+  socket.connect();
 
-  // const socket = io('http://127.0.0.1:5000');
-  // socket.connect();
+  socket.on('battery_cell_voltage', (charge) => {
+     setChargePercentage(charge["Charge"]);
+      })
+   socket.on('battery_charging_mosfet', (mosftJson) => {
+     setMosfetChargingState(mosftJson["ChargingMOSFET"]);
+   })
+   socket.on('battery_discharging_mosfet', (Json) => {
+     setMosfetDischargingState(Json["DischargingMOSFET"]);
+   })
+   socket.on('battery_temperature', (Json) => {
+     setTemperature(Json["Temperature"]);
+   })
+   socket.on('battery_capacity', (Json1) => {
+     setbatteryCapacity(Json1["Capacity"]);
+   })
+   socket.on('battery_minimum_voltage', (Json2) => {
+     setminVoltage(Json2["CellMinimumVoltage"]);
+   })
+   socket.on('battery_maximum_voltage', (Json3) => {
+     setmaxVoltage(Json3["CellMaximumVoltage"]);
+   })
 
-  // socket.on('battery_cell_voltage', (charge) => {
-  //   setChargePercentage(charge["Charge"]);
-  // })
-  // socket.on('battery_charging_mosfet', (mosftJson) => {
-  //   setMosfetChargingState(mosftJson["ChargingMOSFET"]);
-  // })
-  // socket.on('battery_discharging_mosfet', (Json) => {
-  //   setMosfetDischargingState(Json["DischargingMOSFET"]);
-  // })
-  // socket.on('battery_temperature', (Json) => {
-  //   setTemperature(Json["Temperature"]);
-  // })
-  // socket.on('battery_capacity', (Json1) => {
-  //   setbatteryCapacity(Json1["Capacity"]);
-  // })
-  // socket.on('battery_minimum_voltage', (Json2) => {
-  //   setminVoltage(Json2["CellMinimumVoltage"]);
-  // })
-  // socket.on('battery_maximum_voltage', (Json3) => {
-  //   setmaxVoltage(Json3["CellMaximumVoltage"]);
-  // })
-
-  // socket.on('battery_voltage',(Json4) => {
-  //   setarrayVoltage(Json4["Voltage"]);
-  // })
-  
-  
-
-  // useEffect(() => {
-  //   const updateFunc = async () => {
-  //     socket.emit('get_cell_voltage');
-  //     socket.emit('get_charging_mosfet');
-  //     socket.emit('get_discharging_mosfet');
-  //     socket.emit('get_temperature');
-  //     socket.emit('get_capacity');
-  //     socket.emit('get_min_voltage');
-  //     socket.emit('get_max_voltage');
-  //     socket.emit('get_voltage');
-  //   }
-
-  //   const id = setInterval(updateFunc, 2000);
-  //   return () => clearInterval(id);
-  // })
+   socket.on('battery_voltage',(Json4) => {
+     setarrayVoltage(Json4["Voltage"]);
+   })
+     useEffect(() => {
+     const updateFunc = async () => {
+       socket.emit('get_cell_voltage');
+       socket.emit('get_charging_mosfet');
+       socket.emit('get_discharging_mosfet');
+       socket.emit('get_temperature');
+       socket.emit('get_capacity');
+       socket.emit('get_min_voltage');
+       socket.emit('get_max_voltage');
+       socket.emit('get_voltage');
+     }
+    const id = setInterval(updateFunc, 2000);
+     return () => clearInterval(id);
+    })*/
 
   return (
     <div className="body">
