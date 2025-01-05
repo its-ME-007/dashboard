@@ -94,7 +94,7 @@ const MainContent: React.FC = () => {
 
   const updateFunction = async () => {
     try {
-      const response = await fetch('http://0.0.0.0:5001/bms');
+      const response = await fetch('http://localhost:5001/bms');
       const data = await response.json()
       
       const battery = data["Battery"];

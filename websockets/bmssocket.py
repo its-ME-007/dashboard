@@ -1,10 +1,12 @@
 from flask import Flask, Blueprint
 from flask_socketio import SocketIO
 from message_manager import MessageManager
+from flask_cors import CORS
 
 bms_bp = Blueprint('bms', __name__)
 def start_bms_service(port, message_manager: MessageManager):
     app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000/*"}})
     socketio = SocketIO(app, async_mode='gevent')
 
     @app.route('/bms',methods = ["GET"])

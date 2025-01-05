@@ -13,7 +13,7 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000/*"}})
 
 # Define allowed origins
 
@@ -22,7 +22,7 @@ socketio = SocketIO(
     async_mode='gevent',
     logger=True,
     engineio_logger=True,
-    cors_allowed_origins="http://localhost:3000"
+    cors_allowed_origins="http://localhost:3000/*"
 )
 
 message_manager = MessageManager("battery_data.json", socketio)
